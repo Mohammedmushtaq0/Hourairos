@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Hourairos</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+        Hourairos
+    </div>
+
+    <div class="auth-buttons">
+
+        <% if (isAuthenticated) { %>
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/logout">
+                Logout
+            </a>
+
+        <% } else { %>
+
+            <a href="/login">
+                Login
+            </a>
+
+        <% } %>
+
+    </div>
+
+</nav>
+
+<section class="hero">
+
+    <h1>
+        Deploy Instantly
+    </h1>
+
+    <p>
+        Modern cloud deployments made simple.
+    </p>
+
+</section>
+
+</body>
+</html>

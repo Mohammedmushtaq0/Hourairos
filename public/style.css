@@ -1,0 +1,106 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #0f0f0f;
+  color: white;
+  min-height: 100vh;
+}
+
+/* Navbar */
+
+nav {
+  width: 100%;
+  padding: 20px 60px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 1px solid #222;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.login-btn {
+  background: transparent;
+  border: 1px solid #444;
+  color: white;
+}
+
+.login-btn:hover {
+  background: #1c1c1c;
+}
+
+.signup-btn {
+  background: white;
+  color: black;
+  font-weight: bold;
+}
+
+.signup-btn:hover {
+  opacity: 0.9;
+}
+
+/* Hero */
+
+.hero {
+  height: calc(100vh - 80px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  padding: 20px;
+}
+
+.hero h1 {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  max-width: 700px;
+
+  color: #b3b3b3;
+  font-size: 18px;
+  line-height: 1.6;
+
+  margin-bottom: 30px;
+}
+
+.start-btn {
+  background: white;
+  color: black;
+
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.start-btn:hover {
+  transform: translateY(-2px);
+}
