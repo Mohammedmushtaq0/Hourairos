@@ -16,3 +16,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::851725373663:role/Github-OIDC-Access-role-ecs-ecr
+          aws-region: ap-south-1
