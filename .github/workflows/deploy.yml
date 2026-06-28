@@ -1,69 +1,63 @@
-# name: Deploy Hourairos to ECS
+name: Deploy Hourairos to ECS
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
-# permissions:
-#   id-token: write
-#   contents: read
+permissions:
+  id-token: write
+  contents: read
 
-# env:
-#   AWS_REGION: ap-south-1
-#   ECR_REPOSITORY: hourairos/main-app
-#   ECS_CLUSTER: hourairos-cluster
-#   ECS_SERVICE: hourairous-app-fargate-service-z4p2puiy
+env:
+  AWS_REGION: ap-south-1
+  ECR_REPOSITORY: hourairos/main-app
+  ECS_SERVICE: hourairous-app-fargate-service-z4p2puiy
+  ECS_CLUSTER: hourairos-cluster
+  ECS_TASK_DEFINITION: ecs-task-definition.json
+  CONTAINER_NAME: hourairos-app-fragate
 
-# jobs:
-#   deploy:
-#     name: Build and Deploy
-#     runs-on: ubuntu-latest
+jobs:
+  deploy:
+    name: Deploy to ECS
+    runs-on: ubuntu-latest
 
-#     steps:
-#       # Step 1: Checkout source code
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
 
-#       # Step 2: Configure AWS credentials using OIDC
-#       - name: Configure AWS credentials
-#         uses: aws-actions/configure-aws-credentials@v4
-#         with:
-#           role-to-assume: arn:aws:iam::851725373663:role/Github-OIDC-Access-role-ecs-ecr
-#           aws-region: ${{ env.AWS_REGION }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::851725373663:role/Github-OIDC-Access-role-ecs-ecr
+          aws-region: ${{ env.AWS_REGION }}
 
-#       # Step 3: Login to Amazon ECR
-#       - name: Login to Amazon ECR
-#         id: login-ecr
-#         uses: aws-actions/amazon-ecr-login@v2
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-#       # Step 4: Build, tag, and push Docker image
-#       - name: Build and Push Docker image
-#         env:
-#           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-#           IMAGE_TAG: ${{ github.sha }}
-#         run: |
-#           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-#           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+      - name: Build, tag, and push image to ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-#           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-#           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+      - name: Render Amazon ECS task definition
+        id: render-task-definition
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
 
-#       # Step 5: Trigger ECS deployment
-#       - name: Force new ECS deployment
-#         run: |
-#           aws ecs update-service \
-#             --cluster $ECS_CLUSTER \
-#             --service $ECS_SERVICE \
-#             --force-new-deployment
-
-#       # Step 6: Wait for ECS deployment to stabilize
-#       - name: Wait for ECS service stability
-#         run: |
-#           aws ecs wait services-stable \
-#             --cluster $ECS_CLUSTER \
-#             --services $ECS_SERVICE
-
-#       # Step 7: Deployment completed
-#       - name: Deployment Success
-#         run: echo "Hourairos deployed successfully!"
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-task-definition.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
