@@ -1,9 +1,28 @@
-name: Deploy Hourairos to ECS
-
 on:
   push:
     branches:
       - main
+    paths:
+      - 'backend/**'
+      - 'lib/**'
+      - 'public/**'
+      - 'services/**'
+      - 'utils/**'
+      - 'views/**'
+
+      - 'server.js'
+      - 'bootstrap.js'
+      - 'telemetry.js'
+      - 'metrics.js'
+
+      - 'package.json'
+      - 'package-lock.json'
+
+      - 'Dockerfile'
+
+      - 'ecs-task-definition.json'
+
+      - '.github/workflows/deploy.yml'
 
 permissions:
   id-token: write
