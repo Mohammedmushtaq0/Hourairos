@@ -11,3 +11,8 @@ coverage/
 *.zip
 temp/
 uploads/
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
