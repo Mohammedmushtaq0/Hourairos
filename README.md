@@ -1,102 +1,224 @@
-
 # Hourairos
 
-> A production-inspired cloud platform for deploying and hosting static websites on AWS using modern cloud-native architecture, Infrastructure as Code, container orchestration, observability, and automated CI/CD.
+> **A production-inspired cloud-native static website hosting platform built on AWS using Amazon ECS, AWS Fargate, Terraform, OpenTelemetry, and GitHub Actions.**
 
 ---
 
-## Table of Contents
+<p align="center">
 
-- [Project Overview](#project-overview)
-- [Why Hourairos?](#why-hourairos)
-- [Project Goals](#project-goals)
-- [Core Features](#core-features)
-- [System Architecture](#system-architecture)
-- [Application Workflow](#application-workflow)
-- [Authentication Flow](#authentication-flow)
-- [Static Website Deployment Flow](#static-website-deployment-flow)
-- [Technology Stack](#technology-stack)
-- [AWS Services Used](#aws-services-used)
-- [Repository Structure](#repository-structure)
-- [Backend Architecture](#backend-architecture)
-- [Container Architecture](#container-architecture)
-- [Amazon ECS Architecture](#amazon-ecs-architecture)
-- [Docker Architecture](#docker-architecture)
-- [Networking Overview](#networking-overview)
-- [Service Discovery using ECS Service Connect](#service-discovery-using-ecs-service-connect)
-- [Observability Architecture](#observability-architecture)
-- [CI/CD Pipeline](#cicd-pipeline)
-- [Infrastructure as Code](#infrastructure-as-code)
-- [Terraform Remote State](#terraform-remote-state)
-- [Security](#security)
-- [Future Improvements](#future-improvements)
-- [Learning Outcomes](#learning-outcomes)
+**Build • Deploy • Observe • Automate**
+
+A complete cloud engineering project demonstrating modern AWS architecture, Infrastructure as Code, container orchestration, observability, secure authentication, and production deployment practices.
+
+</p>
 
 ---
 
-# Project Overview
-
-Hourairos is a cloud-native static website hosting platform built entirely on AWS.
-
-The project allows authenticated users to upload their static websites in ZIP format, automatically extracts the website, stores it securely inside Amazon S3, and delivers it globally through Amazon CloudFront.
-
-Instead of being a simple CRUD application, Hourairos focuses on demonstrating how modern cloud applications are designed, deployed, monitored, and managed in production environments.
-
-The project combines multiple AWS services with modern DevOps and Cloud Engineering practices, including:
-
-- Containerized applications using Docker
-- Amazon ECS with AWS Fargate
-- Infrastructure as Code using Terraform
-- CI/CD using GitHub Actions
-- Authentication using Amazon Cognito
-- Distributed observability using OpenTelemetry
-- Secure secret management
-- Service discovery using ECS Service Connect
-- Cloud-native deployment architecture
-
-The primary objective of Hourairos is not only to host static websites but also to serve as a complete cloud engineering project that demonstrates real-world AWS architecture and operational practices.
+> **This project was built to learn cloud engineering, not just cloud services.**
+>
+> Instead of creating another CRUD application, Hourairos focuses on understanding how production applications are deployed, managed, monitored, secured, and automated on AWS.
 
 ---
 
-# Why Hourairos?
+# TL;DR (30 Second Overview)
 
-Most portfolio projects focus only on application development.
+Hourairos is a cloud-native platform that allows authenticated users to deploy static websites by uploading a ZIP archive.
 
-Hourairos focuses on the infrastructure behind the application.
+After a user uploads their project, the backend automatically validates the archive, extracts its contents, uploads the website to Amazon S3, and serves it globally through Amazon CloudFront.
 
-Rather than building another full-stack web application, this project explores how cloud providers deploy, manage, monitor, and scale applications in production.
+The application itself is fully containerized using Docker and deployed on Amazon ECS using the AWS Fargate launch type. Authentication is handled through Amazon Cognito while infrastructure is managed using Terraform.
 
-It was built to gain practical experience with AWS services while understanding how these services integrate together to form a complete cloud platform.
+The platform also includes a complete observability stack powered by OpenTelemetry, Prometheus, Grafana, Tempo and Loki, allowing metrics, logs and distributed traces to be collected from the application.
 
-The project emphasizes:
+Instead of relying on manually deployed infrastructure, the project demonstrates how existing AWS resources can be migrated into Terraform using Import Blocks while maintaining infrastructure state remotely using Amazon S3 and DynamoDB.
 
-- Cloud Architecture
-- Infrastructure Automation
-- Container Orchestration
-- Secure Authentication
-- Networking
-- Observability
-- Continuous Deployment
-- Infrastructure as Code
-
-The application itself is intentionally simple so that the primary focus remains on the cloud infrastructure powering it.
+The complete application lifecycle—from source code to production deployment—is automated using GitHub Actions with AWS OpenID Connect (OIDC), eliminating the need for long-lived AWS credentials.
 
 ---
 
-# Project Goals
+# Highlights
 
-The major goals behind this project were:
+* Production-inspired AWS architecture
+* Static website deployment platform
+* Containerized Node.js backend
+* Amazon ECS with AWS Fargate
+* Docker & Amazon ECR
+* Amazon Cognito authentication
+* ZIP based deployment workflow
+* Amazon S3 static asset hosting
+* Amazon CloudFront global CDN
+* Amazon Route 53 DNS management
+* ECS Service Connect
+* AWS Cloud Map service discovery
+* OpenTelemetry instrumentation
+* Prometheus metrics
+* Loki log aggregation
+* Tempo distributed tracing
+* Grafana dashboards
+* Infrastructure as Code using Terraform
+* Terraform Import Blocks
+* Remote Terraform state using Amazon S3
+* DynamoDB state locking
+* GitHub Actions CI/CD
+* AWS OpenID Connect authentication
 
-- Build a production-inspired AWS architecture.
-- Learn container orchestration using Amazon ECS.
-- Understand Docker image lifecycle.
-- Implement Infrastructure as Code using Terraform.
-- Learn secure authentication using Amazon Cognito.
-- Implement complete observability using OpenTelemetry.
-- Understand service-to-service communication inside ECS.
-- Deploy applications without managing EC2 servers by using AWS Fargate.
-- Build an automated CI/CD pipeline.
-- Learn Terraform migration from manually created resources.
+---
+
+# What is Hourairos?
+
+Hourairos is a cloud-native static website hosting platform designed to simulate the deployment workflow used by modern hosting providers such as Vercel and Netlify while exposing the underlying cloud infrastructure powering those deployments.
+
+Instead of focusing primarily on frontend or backend application development, this project focuses on the cloud engineering practices required to deploy and operate applications at scale.
+
+The platform demonstrates how multiple AWS managed services integrate together to provide authentication, deployment automation, networking, observability, infrastructure management and continuous delivery.
+
+Hourairos was developed as a learning project to gain practical experience with modern AWS architecture while implementing production-inspired engineering practices rather than relying on simplified tutorial examples.
+
+---
+
+# Why I Built Hourairos
+
+Most portfolio projects demonstrate application development.
+
+Hourairos was built to demonstrate cloud engineering.
+
+The objective was not simply to deploy an application but to understand every layer involved in operating cloud-native workloads.
+
+Throughout the project I wanted to answer questions such as:
+
+* How do containerized applications communicate inside ECS?
+* How does AWS Fargate remove server management?
+* How does Service Connect discover services?
+* How are distributed traces collected?
+* How do production applications manage secrets?
+* How does Terraform migrate existing infrastructure?
+* How do GitHub Actions securely authenticate with AWS?
+* How do monitoring systems collect telemetry from distributed services?
+
+Rather than studying these concepts individually, Hourairos combines them into one complete project where every service works together as part of a production-inspired architecture.
+
+---
+
+# What Makes Hourairos Different?
+
+Many AWS portfolio projects follow a similar pattern:
+
+* Launch an EC2 instance
+* Deploy a web application
+* Connect a database
+* Stop
+
+Hourairos takes a different approach.
+
+Instead of demonstrating individual AWS services, it focuses on how cloud platforms are engineered.
+
+Some of the engineering concepts demonstrated include:
+
+## Cloud Native Deployment
+
+The application is deployed entirely as containers using Amazon ECS and AWS Fargate without managing EC2 instances.
+
+---
+
+## Infrastructure as Code Migration
+
+Rather than provisioning infrastructure exclusively through Terraform, the project demonstrates migrating manually created AWS resources into Terraform using Import Blocks.
+
+This reflects a common real-world scenario where organizations adopt Infrastructure as Code after infrastructure has already been deployed.
+
+---
+
+## Service-to-Service Communication
+
+Instead of relying on static IP addresses, ECS Service Connect and AWS Cloud Map provide dynamic service discovery between application components.
+
+---
+
+## Complete Observability
+
+The backend exports metrics, logs and traces through OpenTelemetry.
+
+Telemetry is collected by an OpenTelemetry Collector before being forwarded to Prometheus, Loki and Tempo for storage and visualization inside Grafana.
+
+---
+
+## Secure Deployment Pipeline
+
+GitHub Actions authenticates to AWS using OpenID Connect.
+
+No long-lived AWS credentials are stored inside GitHub.
+
+Temporary credentials are issued dynamically during every deployment.
+
+---
+
+## Production-Oriented Infrastructure
+
+The project includes:
+
+* Container orchestration
+* Infrastructure as Code
+* Secure authentication
+* Distributed observability
+* Automated deployment
+* Service discovery
+* Remote Terraform state
+* Secrets management
+
+Rather than existing as isolated demonstrations, these components work together as one complete system.
+
+---
+
+# Architecture at a Glance
+
+```text
+                               Internet
+                                   │
+                                   │
+                             Amazon Route 53
+                                   │
+                                   │
+                     Application Load Balancer
+                                   │
+                                   │
+                    Amazon ECS Cluster (Fargate)
+                                   │
+      ┌────────────────────────────┼────────────────────────────┐
+      │                            │                            │
+      │                            │                            │
+      ▼                            ▼                            ▼
+Hourairos Backend        OTEL Collector                  Grafana
+      │                            │
+      │                            │
+      │                    ┌───────┼───────────────┐
+      │                    │       │               │
+      ▼                    ▼       ▼               ▼
+ Cognito             Prometheus   Loki          Tempo
+      │
+      │
+      ▼
+ Secrets Manager
+
+      │
+
+      ▼
+
+ Amazon S3
+
+      │
+
+      ▼
+
+ CloudFront
+
+      │
+
+      ▼
+
+ Static Website
+```
+
+> Replace this diagram with a proper architecture image in the future.
 
 ---
 
@@ -104,480 +226,224 @@ The major goals behind this project were:
 
 ## User Authentication
 
-- User registration
-- Secure login
-- Email verification
-- Session management
-- Cookie-based authentication
-- JWT validation through Amazon Cognito
+Hourairos uses Amazon Cognito as its identity provider.
+
+Authentication includes:
+
+* User registration
+* Secure login
+* Hosted UI
+* Email verification
+* OAuth 2.0 Authorization Code Flow
+* OpenID Connect
+* JWT tokens
+* Secure HTTP sessions
+* Cookie-based authentication
+
+The backend validates user sessions before allowing access to deployment features.
 
 ---
 
-## Static Website Hosting
+## Static Website Deployment
 
-Users can deploy static websites by uploading ZIP files.
+Users can deploy any static website by uploading a ZIP archive.
 
-Supported website technologies include:
+Supported technologies include:
 
-- HTML
-- CSS
-- JavaScript
-- Images
-- Fonts
-- Static Assets
+* HTML
+* CSS
+* JavaScript
+* Images
+* Fonts
+* Static assets
 
-After uploading, the application automatically:
+The backend automatically:
 
-- Validates the uploaded archive
-- Extracts the files
-- Finds the project root
-- Uploads assets to Amazon S3
-- Creates a deployment record
-- Makes the website globally accessible through Amazon CloudFront
+* Validates the uploaded archive
+* Extracts the ZIP file
+* Locates the project root
+* Searches for the primary index.html
+* Generates a unique deployment identifier
+* Uploads files into Amazon S3
+* Stores deployment metadata
+* Returns the deployment URL
+
+No manual deployment steps are required.
 
 ---
 
-## Cloud Deployment
+## Cloud Storage
 
-Every uploaded website receives its own deployment.
+Uploaded websites are stored inside Amazon S3.
 
-Each deployment is isolated from others by storing files inside unique directories.
+Each deployment is isolated using its own directory.
 
 Example:
 
+```text
 deployments/
 
-```
-deployment-a83h72/
+├── deployment-a82d93fa/
 │
 ├── index.html
 ├── css/
 ├── js/
 ├── images/
 └── assets/
+
+├── deployment-b13fa762/
+│
+├── index.html
+├── css/
+├── js/
+└── assets/
 ```
 
-This makes deployments immutable and prevents one deployment from affecting another.
+This immutable deployment model prevents deployments from overwriting one another and makes rollback strategies easier to implement in the future.
 
 ---
 
-## Secure Infrastructure
+## Global Content Delivery
 
-The application makes use of several AWS managed services to improve security.
+Instead of exposing Amazon S3 directly to end users, Hourairos uses Amazon CloudFront as the content delivery layer.
 
-These include:
+CloudFront provides:
 
-- AWS Cognito
-- AWS Secrets Manager
-- IAM Roles
-- IAM Policies
-- HTTPS
-- CloudFront
-- Private networking
+* Global edge locations
+* HTTPS
+* Low latency
+* Edge caching
+* High availability
+* Better performance
+* Additional security
 
-Sensitive configuration values are never stored directly inside the source code.
-
-Instead, they are securely retrieved from AWS Secrets Manager during application startup.
+Every uploaded website becomes globally accessible through CloudFront.
 
 ---
 
-## Containerized Deployment
+## Containerized Application
 
-The backend application is fully containerized using Docker.
+The backend application is packaged using Docker.
 
-Container images are stored inside Amazon Elastic Container Registry (ECR).
+Every release produces a Docker image which is stored inside Amazon Elastic Container Registry (ECR).
 
-Amazon ECS automatically pulls the latest Docker image from ECR and deploys it using AWS Fargate.
+Amazon ECS automatically deploys these images using AWS Fargate.
 
-This removes the need to manually manage servers or EC2 instances.
+This removes the need to provision or maintain virtual machines.
 
 ---
 
 ## Infrastructure as Code
 
-The infrastructure is managed using Terraform.
+All infrastructure is managed using Terraform.
 
-Instead of creating infrastructure entirely from scratch, this project demonstrates how existing AWS resources can be migrated into Terraform using Import Blocks.
+The project demonstrates both infrastructure provisioning and migration.
 
-This closely resembles migration scenarios commonly found in production environments where manually created infrastructure is gradually brought under Infrastructure as Code management.
+Existing manually created AWS resources are imported into Terraform state using Import Blocks, allowing Terraform to manage previously unmanaged infrastructure.
 
----
-
-## Complete Observability
-
-Hourairos is instrumented using OpenTelemetry.
-
-The application automatically exports:
-
-- Metrics
-- Logs
-- Distributed Traces
-
-These telemetry signals are collected by an OpenTelemetry Collector before being forwarded to their respective storage systems.
-
-This architecture separates telemetry generation from telemetry storage.
+This closely mirrors Infrastructure as Code adoption strategies used in production environments.
 
 ---
 
-# System Architecture
+## Observability
 
-The overall architecture consists of multiple AWS services working together.
+The application exports telemetry using OpenTelemetry.
 
-```
-                        Internet
-                            │
-                            │
-                     Amazon Route53
-                            │
-                            │
-                  Application Load Balancer
-                            │
-                            │
-                Amazon ECS Cluster (Fargate)
-                            │
-         ┌──────────────────┴──────────────────┐
-         │                                     │
-         │                                     │
-  Hourairos Backend                 OTEL Collector
-         │                                     │
-         │                                     │
-         ├───────────────┐                     │
-         │               │                     │
-         │               │                     │
-      Cognito        Secrets Manager           │
-         │                                     │
-         │                                     │
-         ├───────────────┐                     │
-         │               │                     │
-         ▼               ▼                     ▼
-        S3          CloudFront        Prometheus / Loki / Tempo
-         │                                     │
-         └─────────────────────────────────────┘
-                            │
-                        Grafana
-```
+Three telemetry signals are collected:
 
-> Replace this section later with a detailed architecture diagram.
+* Metrics
+* Logs
+* Distributed Traces
+
+These signals are forwarded to an OpenTelemetry Collector before being exported to specialized monitoring systems.
+
+This architecture keeps telemetry generation separate from telemetry storage while simplifying future expansion.
 
 ---
 
-# Application Workflow
-
-The complete workflow of Hourairos follows a cloud-native deployment pipeline.
-
-```
-User
-
-↓
-
-Authenticate using Cognito
-
-↓
-
-Session Created
-
-↓
-
-Upload ZIP File
-
-↓
-
-Node.js Backend
-
-↓
-
-Validate Archive
-
-↓
-
-Extract Files
-
-↓
-
-Locate index.html
-
-↓
-
-Upload Files to Amazon S3
-
-↓
-
-Generate Deployment ID
-
-↓
-
-Store Deployment Metadata
-
-↓
-
-Serve Website through CloudFront
-
-↓
-
-Website Accessible Globally
-```
-
-Each deployment remains independent and can be managed separately.
-
----
-
-# Authentication Flow
-
-Hourairos uses Amazon Cognito as the Identity Provider.
-
-Instead of implementing a custom authentication system, the project relies on AWS managed authentication services.
-
-Authentication Flow:
-
-```
-User
-
-↓
-
-Login Button
-
-↓
-
-Amazon Cognito Hosted UI
-
-↓
-
-Email Verification
-
-↓
-
-Successful Login
-
-↓
-
-Authorization Code
-
-↓
-
-Backend Exchanges Code
-
-↓
-
-Access Token
-
-↓
-
-ID Token
-
-↓
-
-Session Created
-
-↓
-
-Cookie Stored
-
-↓
-
-Authenticated Requests
-```
-
-The backend validates every authenticated request before allowing access to protected resources.
-
-Unauthenticated users cannot upload or manage deployments.
-
----
-
-# Static Website Deployment Flow
-
-Deploying a website involves several independent steps.
-
-## Step 1
-
-The user selects a ZIP archive.
-
-Example:
-
-```
-portfolio.zip
-```
-
----
-
-## Step 2
-
-The ZIP archive is uploaded to the backend.
-
-The backend validates:
-
-- File type
-- File size
-- Upload integrity
-
----
-
-## Step 3
-
-The archive is extracted.
-
-Example:
-
-```
-portfolio/
-
-├── index.html
-├── css/
-├── js/
-├── assets/
-└── images/
-```
-
-The backend searches recursively until it locates the website root.
-
----
-
-## Step 4
-
-A unique deployment identifier is generated.
-
-Example:
-
-```
-deployment-4df83ad1
-```
-
-This deployment ID becomes the root folder inside Amazon S3.
-
-```
-deployments/
-
-deployment-4df83ad1/
-
-index.html
-
-css/
-
-js/
-
-images/
-```
-
-This structure guarantees deployment isolation and simplifies deployment management.
-
----
-
-## Step 5
-
-The extracted files are uploaded into Amazon S3.
-
-Amazon S3 serves as durable object storage for all deployment assets.
-
-Benefits include:
-
-- High durability
-- High availability
-- Virtually unlimited storage
-- Managed scalability
-
-S3 stores the static assets while CloudFront handles global content delivery.
-
----
-
-## Step 6
-
-Amazon CloudFront uses the S3 bucket as its origin.
-
-Instead of exposing S3 directly to end users, CloudFront acts as the content delivery layer.
-
-Benefits include:
-
-- Global edge locations
-- Reduced latency
-- HTTPS support
-- Edge caching
-- Improved performance
-- Additional security
-
-Every deployment becomes accessible using a CloudFront distribution URL.
-
-Route 53 is used to manage DNS records and custom domains where applicable.
-
----
-
-## Step 7
-
-Deployment metadata is stored for future management.
-
-Typical metadata includes:
-
-- Deployment ID
-- User ID
-- Deployment URL
-- Upload timestamp
-- Deployment status
-
-This enables users to manage multiple website deployments independently.
+# Project Objectives
+
+The primary objective of Hourairos was to gain practical experience building a production-inspired AWS platform rather than simply learning individual cloud services.
+
+Specific objectives included:
+
+* Designing a cloud-native architecture using managed AWS services.
+* Learning Docker containerization.
+* Deploying applications using Amazon ECS and AWS Fargate.
+* Understanding service discovery through ECS Service Connect.
+* Implementing secure authentication with Amazon Cognito.
+* Building an end-to-end deployment workflow.
+* Collecting metrics, logs and traces using OpenTelemetry.
+* Managing infrastructure through Terraform.
+* Migrating manually created AWS resources into Infrastructure as Code.
+* Implementing remote Terraform state management.
+* Building an automated CI/CD pipeline.
+* Understanding secure GitHub to AWS authentication using OpenID Connect.
 
 ---
 
 # Technology Stack
 
-| Category | Technologies |
-|-----------|-------------|
-| Backend | Node.js, Express.js |
-| Frontend | HTML, CSS, JavaScript, EJS |
-| Authentication | Amazon Cognito |
-| Containers | Docker |
-| Container Registry | Amazon ECR |
-| Container Orchestration | Amazon ECS |
-| Compute | AWS Fargate |
-| Object Storage | Amazon S3 |
-| CDN | Amazon CloudFront |
-| DNS | Amazon Route 53 |
-| Infrastructure | Terraform |
-| Monitoring | OpenTelemetry |
-| Metrics | Prometheus |
-| Logs | Loki |
-| Traces | Tempo |
-| Dashboards | Grafana |
-| CI/CD | GitHub Actions |
-| Version Control | Git & GitHub |
+| Category                | Technologies               |
+| ----------------------- | -------------------------- |
+| Backend                 | Node.js, Express.js        |
+| Frontend                | HTML, CSS, JavaScript, EJS |
+| Authentication          | Amazon Cognito             |
+| Containers              | Docker                     |
+| Container Registry      | Amazon ECR                 |
+| Container Orchestration | Amazon ECS                 |
+| Compute                 | AWS Fargate                |
+| Object Storage          | Amazon S3                  |
+| CDN                     | Amazon CloudFront          |
+| DNS                     | Amazon Route 53            |
+| Monitoring              | OpenTelemetry              |
+| Metrics                 | Prometheus                 |
+| Logs                    | Loki                       |
+| Traces                  | Tempo                      |
+| Dashboards              | Grafana                    |
+| Infrastructure          | Terraform                  |
+| CI/CD                   | GitHub Actions             |
+| Version Control         | Git & GitHub               |
 
 ---
 
 # AWS Services Used
 
-| Service | Purpose |
-|----------|---------|
-| Amazon ECS | Container orchestration |
-| AWS Fargate | Serverless container runtime |
-| Amazon ECR | Docker image repository |
-| Amazon Cognito | Authentication and user management |
-| Amazon S3 | Static website storage |
-| Amazon CloudFront | Global content delivery |
-| Amazon Route 53 | DNS management |
-| Application Load Balancer | HTTP traffic routing |
-| AWS Secrets Manager | Secure configuration management |
-| Amazon CloudWatch | Container logging |
-| AWS Cloud Map | Service discovery |
-| ECS Service Connect | Service-to-service communication |
-| AWS IAM | Access management |
-| Amazon VPC | Private networking |
-| Terraform | Infrastructure as Code |
+| AWS Service               | Purpose                        |
+| ------------------------- | ------------------------------ |
+| Amazon ECS                | Container orchestration        |
+| AWS Fargate               | Serverless container runtime   |
+| Amazon ECR                | Docker image registry          |
+| Amazon Cognito            | User authentication            |
+| Amazon S3                 | Static website storage         |
+| Amazon CloudFront         | Content delivery network       |
+| Amazon Route 53           | DNS management                 |
+| Application Load Balancer | Traffic routing                |
+| AWS Cloud Map             | Service discovery              |
+| ECS Service Connect       | Internal service communication |
+| AWS Secrets Manager       | Secrets management             |
+| Amazon CloudWatch         | Application logging            |
+| AWS IAM                   | Identity and access management |
+| Amazon VPC                | Network isolation              |
+| Terraform                 | Infrastructure as Code         |
 
 ---
-````
-````markdown
-# Repository Structure
 
-The repository is organized into multiple components, each responsible for a specific part of the application or infrastructure.
+# Repository Overview
+
+The repository is divided into logical components based on responsibility.
 
 ```text
 Hourairos/
-│
+
 ├── backend/
 ├── infrastructure/
 ├── observability/
-├── public/
-├── views/
 ├── services/
 ├── utils/
 ├── middleware/
+├── views/
+├── public/
 ├── lib/
 ├── .github/
 │   └── workflows/
@@ -591,123 +457,622 @@ Hourairos/
 └── README.md
 ```
 
-The project is intentionally separated into independent modules to improve maintainability and allow infrastructure, application logic, and observability to evolve independently.
+Each directory focuses on a specific area of the project, making the codebase easier to maintain and extend.
+
+---
+
+# System Architecture
+
+The complete architecture is composed of multiple independent layers.
+
+```text
+                User
+                  │
+                  ▼
+          Amazon Route 53
+                  │
+                  ▼
+     Application Load Balancer
+                  │
+                  ▼
+      Amazon ECS Cluster (Fargate)
+                  │
+      ┌───────────┴────────────┐
+      │                        │
+      ▼                        ▼
+Hourairos Backend      OTEL Collector
+      │                        │
+      │                        │
+      ▼                        ▼
+Amazon Cognito          Prometheus
+      │                        │
+      ▼                        ▼
+Secrets Manager          Grafana
+      │
+      ▼
+Amazon S3
+      │
+      ▼
+CloudFront
+      │
+      ▼
+Static Website
+```
+
+The following sections describe each component in detail.
+## Application Workflow
+
+The following workflow describes the complete lifecycle of a deployment, starting from user authentication and ending with a globally accessible website.
+
+Unlike traditional applications where uploaded files remain on the application server, Hourairos separates compute from storage by using Amazon S3 for persistent storage and Amazon CloudFront for global content delivery.
+
+This approach follows common cloud-native design principles by keeping the application stateless while allowing deployments to scale independently.
+
+```text
+                   User
+
+                     │
+
+                     ▼
+
+          Login using Cognito
+
+                     │
+
+                     ▼
+
+          Authenticated Session
+
+                     │
+
+                     ▼
+
+            Upload ZIP Archive
+
+                     │
+
+                     ▼
+
+        Hourairos Backend (Node.js)
+
+                     │
+
+         ┌───────────┼────────────┐
+         │           │            │
+         ▼           ▼            ▼
+
+   Validate ZIP   Extract ZIP   Locate index.html
+
+         │           │            │
+
+         └───────────┴────────────┘
+
+                     │
+
+                     ▼
+
+      Generate Unique Deployment ID
+
+                     │
+
+                     ▼
+
+          Upload Assets to Amazon S3
+
+                     │
+
+                     ▼
+
+      Store Deployment Information
+
+                     │
+
+                     ▼
+
+     Amazon CloudFront Distribution
+
+                     │
+
+                     ▼
+
+     Website Accessible Worldwide
+```
+
+Every deployment remains independent from every other deployment.
+
+This architecture allows future enhancements such as deployment versioning, rollback support, deployment history, and immutable releases without modifying the overall deployment workflow.
+
+---
+
+# Deployment Lifecycle
+
+Each deployment consists of several independent stages.
+
+## Step 1 — Authentication
+
+Users authenticate through Amazon Cognito before accessing the deployment dashboard.
+
+After successful authentication:
+
+* Cognito validates user credentials.
+* Email verification is performed (during registration).
+* OAuth Authorization Code Flow is completed.
+* The backend exchanges the authorization code.
+* Session cookies are generated.
+* Authenticated routes become accessible.
+
+Unauthenticated users cannot deploy websites.
+
+---
+
+## Step 2 — ZIP Upload
+
+Users upload a ZIP archive containing their static website.
+
+Example:
+
+```text
+portfolio.zip
+```
+
+Supported content includes:
+
+* HTML
+* CSS
+* JavaScript
+* Images
+* Fonts
+* Static Assets
+
+Since the platform targets static websites, no server-side runtime is required inside the uploaded project.
+
+---
+
+## Step 3 — Validation
+
+Before extraction begins, the backend validates the uploaded archive.
+
+Validation includes:
+
+* File format
+* Upload integrity
+* Presence of required files
+* Directory structure
+
+Only valid deployment packages continue through the deployment pipeline.
+
+---
+
+## Step 4 — Extraction
+
+The uploaded ZIP archive is extracted into a temporary directory.
+
+Example:
+
+```text
+portfolio/
+
+├── index.html
+├── css/
+├── js/
+├── images/
+└── assets/
+```
+
+The backend recursively searches for the primary **index.html** file to determine the deployment root.
+
+This allows users to upload archives even when the website exists inside nested folders.
+
+---
+
+## Step 5 — Deployment Creation
+
+Once validation succeeds, Hourairos generates a unique deployment identifier.
+
+Example:
+
+```text
+deployment-53f0bcb2
+```
+
+This identifier becomes the root directory for that deployment inside Amazon S3.
+
+```text
+deployments/
+
+├── deployment-53f0bcb2/
+│
+├── index.html
+├── css/
+├── js/
+├── images/
+└── assets/
+```
+
+Every deployment remains isolated.
+
+No deployment overwrites any previously uploaded website.
+
+---
+
+## Step 6 — Upload to Amazon S3
+
+The backend uploads every extracted asset into Amazon S3.
+
+Amazon S3 was selected because it provides:
+
+* High durability
+* High availability
+* Virtually unlimited storage
+* Managed scalability
+* Cost-effective object storage
+
+Since the application itself remains stateless, uploaded websites persist independently of the backend containers.
+
+---
+
+## Step 7 — CloudFront Distribution
+
+Instead of exposing the S3 bucket directly to users, Amazon CloudFront serves as the public content delivery layer.
+
+CloudFront uses the S3 bucket as its origin.
+
+Benefits include:
+
+* Global edge locations
+* Reduced latency
+* HTTPS support
+* Edge caching
+* Better user experience
+* Improved availability
+
+Once uploaded, every deployment becomes globally accessible through CloudFront.
+
+---
+
+## Step 8 — Deployment Metadata
+
+After deployment succeeds, metadata is stored for future management.
+
+Typical metadata includes:
+
+* Deployment ID
+* User ID
+* Deployment URL
+* Upload timestamp
+* Deployment status
+
+This enables users to manage multiple deployments independently.
+
+---
+
+# Authentication Architecture
+
+Hourairos uses Amazon Cognito as its identity provider.
+
+Rather than implementing a custom authentication system, authentication is delegated to AWS managed identity services.
+
+This reduces operational complexity while providing secure authentication mechanisms.
+
+---
+
+## Authentication Flow
+
+```text
+             User
+
+               │
+
+               ▼
+
+      Click Login Button
+
+               │
+
+               ▼
+
+      Amazon Cognito Hosted UI
+
+               │
+
+               ▼
+
+      Enter Credentials
+
+               │
+
+               ▼
+
+      Email Verification
+
+               │
+
+               ▼
+
+      Authorization Code
+
+               │
+
+               ▼
+
+     Backend Callback Route
+
+               │
+
+               ▼
+
+     Exchange Authorization Code
+
+               │
+
+               ▼
+
+      Access Token
+
+      Refresh Token
+
+      ID Token
+
+               │
+
+               ▼
+
+      Create Session Cookie
+
+               │
+
+               ▼
+
+     Access Dashboard
+```
+
+The backend validates authenticated sessions before processing deployment requests.
+
+---
+
+# Why Amazon Cognito?
+
+Instead of implementing user authentication manually, Amazon Cognito was selected because it provides:
+
+* Managed authentication
+* Hosted login interface
+* Email verification
+* Password management
+* OAuth 2.0
+* OpenID Connect
+* JWT token support
+* Secure user pools
+
+Using Cognito allows the application to focus on deployment functionality rather than authentication infrastructure.
+
+---
+
+# Session Management
+
+After authentication succeeds, the backend creates a secure session.
+
+Protected routes verify the authenticated session before allowing access.
+
+Examples include:
+
+* Dashboard
+* Upload page
+* Deployment history
+* Account information
+
+Unauthenticated requests are redirected back to the login page.
 
 ---
 
 # Backend Architecture
 
-The backend is built using **Node.js** and **Express.js**.
+The backend is developed using Node.js and Express.js.
 
-Rather than acting as a traditional web application, the backend serves as the orchestration layer responsible for authenticating users, processing deployments, communicating with AWS services, and exporting telemetry.
+Instead of acting as a traditional server-rendered application, the backend primarily orchestrates communication between AWS services.
 
-Its responsibilities include:
+Core responsibilities include:
 
-- User authentication
-- Session management
-- ZIP upload handling
-- Website extraction
-- File validation
-- Amazon S3 uploads
-- Deployment metadata management
-- CloudFront URL generation
-- Metrics generation
-- Trace generation
-- Structured logging
+* Authentication
+* Session management
+* ZIP upload processing
+* Website extraction
+* Amazon S3 uploads
+* Deployment creation
+* Metadata storage
+* Secrets retrieval
+* Telemetry generation
 
-The backend remains stateless, allowing multiple ECS tasks to run simultaneously behind the Application Load Balancer.
+Because the backend remains stateless, multiple containers can execute simultaneously without sharing local application state.
 
-Because application state is not stored locally, containers can be replaced or restarted without affecting users.
+---
+
+# Internal Backend Workflow
+
+The backend performs several coordinated operations for every deployment.
+
+```text
+Incoming Request
+
+        │
+
+        ▼
+
+Authentication
+
+        │
+
+        ▼
+
+Validate Upload
+
+        │
+
+        ▼
+
+Extract ZIP
+
+        │
+
+        ▼
+
+Locate Website Root
+
+        │
+
+        ▼
+
+Generate Deployment ID
+
+        │
+
+        ▼
+
+Upload to Amazon S3
+
+        │
+
+        ▼
+
+Store Metadata
+
+        │
+
+        ▼
+
+Return Deployment URL
+```
+
+Every operation remains independent, making the deployment workflow easier to maintain and extend.
 
 ---
 
 # Docker Architecture
 
-The application is packaged as a Docker image before deployment.
+The entire backend is packaged into a Docker image before deployment.
 
-Using containers provides several advantages:
+Containerization provides several important advantages:
 
-- Consistent runtime environments
-- Easy deployments
-- Dependency isolation
-- Versioned application releases
-- Faster rollbacks
-- Simplified scaling
+* Consistent runtime environment
+* Dependency isolation
+* Portable deployments
+* Version-controlled releases
+* Simplified updates
+* Faster recovery
 
-Every deployment follows the same lifecycle:
+The same Docker image is used throughout development, testing, and production.
+
+---
+
+## Container Lifecycle
+
+Every application update follows the same lifecycle.
 
 ```text
 Application Source
 
-↓
+        │
+
+        ▼
 
 Docker Build
 
-↓
+        │
+
+        ▼
 
 Docker Image
 
-↓
+        │
+
+        ▼
 
 Amazon ECR
 
-↓
+        │
+
+        ▼
 
 Amazon ECS
 
-↓
+        │
+
+        ▼
 
 AWS Fargate
 
-↓
+        │
 
-Running Container
+        ▼
+
+Running Application
 ```
 
-Docker ensures the application behaves identically during development, testing, and production.
+This ensures every deployment is reproducible and identical regardless of where it is executed.
 
 ---
 
-# Amazon ECR
+# Amazon Elastic Container Registry (ECR)
 
-Amazon Elastic Container Registry (ECR) stores all Docker images used by Hourairos.
+Amazon ECR stores every Docker image produced by the project.
 
-Whenever the application is updated:
+Deployment process:
 
-1. A new Docker image is created.
-2. The image is tagged.
-3. The image is pushed to Amazon ECR.
-4. ECS pulls the latest image.
-5. A new deployment begins.
+1. Docker image is built.
+2. Image is tagged.
+3. Image is pushed to Amazon ECR.
+4. ECS retrieves the latest image.
+5. New tasks are launched.
+6. Previous tasks are terminated after healthy replacement.
 
-This eliminates the need to copy application files directly onto servers.
+Using ECR removes the need to manually transfer application artifacts to production infrastructure.
 
 ---
 
-# Amazon ECS Architecture
+# Amazon ECS
 
-Amazon ECS serves as the container orchestration platform for Hourairos.
+Amazon Elastic Container Service (ECS) orchestrates every application container.
 
-Instead of manually managing Docker containers, ECS automatically handles:
+Rather than managing Docker containers manually, ECS automates:
 
-- Task scheduling
-- Container placement
-- Health monitoring
-- Service recovery
-- Deployment updates
-- Networking
-- Service discovery
+* Container scheduling
+* Service health monitoring
+* Task replacement
+* Rolling deployments
+* Service discovery
+* Networking
+* Integration with AWS services
 
-The project uses the **AWS Fargate launch type**, meaning AWS manages the underlying infrastructure required to run the containers.
+Hourairos uses ECS as the central compute platform for every running application component.
 
-No EC2 instances are provisioned or maintained.
+---
 
-Current ECS Services include:
+# AWS Fargate
+
+The project uses the AWS Fargate launch type.
+
+Unlike traditional ECS deployments that require EC2 instances, Fargate manages the underlying compute infrastructure automatically.
+
+Benefits include:
+
+* No server provisioning
+* No operating system management
+* Automatic infrastructure provisioning
+* Simplified scaling
+* Reduced operational overhead
+* Better workload isolation
+
+This allows development to focus entirely on application logic rather than infrastructure maintenance.
+
+---
+
+# ECS Cluster Architecture
+
+The ECS cluster hosts multiple independent services.
 
 ```text
 Amazon ECS Cluster
 
-├── Hourairos Application
+├── Hourairos Backend
 │
 ├── OpenTelemetry Collector
 │
@@ -716,120 +1081,128 @@ Amazon ECS Cluster
 └── Tempo
 ```
 
-Each service runs independently inside the cluster while remaining discoverable through ECS Service Connect.
+Each service performs a dedicated responsibility while remaining independently deployable.
 
----
-
-# Why AWS Fargate?
-
-Instead of provisioning EC2 instances, Hourairos uses AWS Fargate for container execution.
-
-Advantages include:
-
-- No server management
-- Automatic infrastructure provisioning
-- Simplified scaling
-- Better security isolation
-- Pay only for allocated resources
-- Reduced operational overhead
-
-Fargate allows the project to focus on application deployment rather than infrastructure maintenance.
+This separation improves maintainability, scalability, and fault isolation.
 
 ---
 
 # Application Load Balancer
 
-All incoming traffic enters the application through an AWS Application Load Balancer.
+All external traffic enters the platform through an AWS Application Load Balancer.
 
-The ALB performs several responsibilities:
+The load balancer is responsible for:
 
-- Receives HTTP/HTTPS requests
-- Routes traffic to ECS tasks
-- Performs health checks
-- Distributes traffic between healthy containers
-- Supports future horizontal scaling
+* Receiving HTTP requests
+* Performing health checks
+* Routing requests to healthy ECS tasks
+* Distributing traffic across running containers
 
-High-level request flow:
+Because ECS tasks are ephemeral, the Application Load Balancer ensures requests are only forwarded to healthy application instances.
+
+---
+
+# Request Flow
 
 ```text
-User
+Internet
 
-↓
+        │
 
-Route 53
+        ▼
 
-↓
+Amazon Route 53
+
+        │
+
+        ▼
 
 Application Load Balancer
 
-↓
+        │
+
+        ▼
 
 Hourairos ECS Tasks
+
+        │
+
+        ▼
+
+Application Response
 ```
 
-Because ECS tasks are ephemeral, the load balancer always routes traffic only to healthy containers.
+This architecture enables future horizontal scaling without requiring application changes.
 
 ---
 
 # Networking Overview
 
-The application is deployed inside an Amazon Virtual Private Cloud (VPC).
+Hourairos is deployed inside an Amazon Virtual Private Cloud (VPC).
 
-The networking architecture separates public access from private workloads.
+The networking architecture separates public traffic from internal application workloads.
 
-High-level layout:
+High-level components include:
 
-```text
-Internet
+* Amazon VPC
+* Public Subnets
+* Private Subnets
+* Internet Gateway
+* NAT Gateway
+* Route Tables
+* Security Groups
+* Application Load Balancer
 
-↓
+Backend containers remain isolated from direct internet access.
 
-Internet Gateway
+Only the Application Load Balancer receives public traffic.
 
-↓
+The following section explains how ECS services communicate internally without relying on static IP addresses.
+# Service Discovery using Amazon ECS Service Connect
 
-Public Subnet
+One of the biggest challenges in containerized environments is enabling reliable communication between services.
 
-↓
+Unlike traditional virtual machines, containers are ephemeral. Every time an ECS task is restarted, stopped, replaced, or scaled, it can receive a completely different private IP address.
 
-Application Load Balancer
+If services communicated directly using private IP addresses, every restart would require application reconfiguration.
 
-↓
+Hourairos solves this problem by using **Amazon ECS Service Connect**.
 
-Private Subnet
+Instead of communicating through IP addresses, services communicate using logical DNS names.
 
-↓
-
-Amazon ECS Tasks
-```
-
-This separation improves security by ensuring backend containers are not directly accessible from the public internet.
-
-Networking components include:
-
-- VPC
-- Public Subnets
-- Private Subnets
-- Internet Gateway
-- NAT Gateway
-- Route Tables
-- Security Groups
+This allows every service to discover and communicate with other services regardless of where they are running inside the ECS cluster.
 
 ---
 
-# Service Discovery using ECS Service Connect
+# Why Service Connect?
 
-One challenge with containerized environments is service-to-service communication.
+Without Service Connect, communication would look like this:
 
-Containers receive dynamic IP addresses every time they are started.
+```text
+Hourairos Backend
 
-Hardcoding private IP addresses is therefore not practical.
+↓
 
-Hourairos solves this by using **Amazon ECS Service Connect**.
+10.0.3.154
 
-Instead of communicating using IP addresses, services communicate using DNS names.
+↓
 
-Example:
+OpenTelemetry Collector
+```
+
+If the OpenTelemetry Collector restarts:
+
+```text
+10.0.3.154
+
+↓
+
+10.0.5.203
+```
+
+The backend would still try to send telemetry to the old address, causing communication failures.
+
+Instead, Service Connect provides a stable service name.
 
 ```text
 Hourairos Backend
@@ -840,58 +1213,87 @@ otel-collector
 
 ↓
 
-tempo
+OpenTelemetry Collector
 ```
 
-If a container is restarted and receives a different private IP address, the DNS name remains unchanged.
+Although the underlying IP address changes, the service name remains the same.
 
-This allows services to communicate reliably without requiring configuration updates.
+No application configuration needs to change.
+
+---
+
+# How Service Connect Works in Hourairos
+
+Every ECS service joins the same Service Connect namespace.
+
+Example namespace:
+
+```text
+hourairos.local
+```
+
+Registered services:
+
+```text
+hourairos.local
+
+├── hourairos-app
+
+├── otel-collector
+
+├── grafana
+
+└── tempo
+```
+
+Instead of sending telemetry to:
+
+```text
+http://10.0.4.21:4318
+```
+
+the backend sends it to:
+
+```text
+http://otel-collector:4318
+```
+
+Service Connect automatically resolves the correct destination.
+
+This abstraction allows containers to restart, scale, or move between hosts without breaking communication.
 
 ---
 
 # AWS Cloud Map
 
-Service Connect internally uses AWS Cloud Map.
+Amazon ECS Service Connect is built on top of AWS Cloud Map.
 
-Cloud Map acts as a service registry.
+Cloud Map acts as the service registry for the cluster.
 
-Every ECS service registers itself inside a namespace.
+Whenever a service starts:
 
-Instead of discovering services through IP addresses, ECS queries Cloud Map.
+1. ECS launches the task.
+2. The task joins the Service Connect namespace.
+3. Cloud Map registers the service.
+4. Other services can immediately discover it.
 
-Example:
+Whenever a task stops:
 
-```text
-Namespace
+1. ECS removes the task.
+2. Cloud Map updates its records.
+3. Future requests are routed to healthy tasks.
 
-hourairos.local
+The application never interacts directly with Cloud Map.
 
-↓
-
-Registered Services
-
-hourairos-app
-
-otel-collector
-
-grafana
-
-tempo
-```
-
-Cloud Map automatically updates service registrations whenever ECS tasks start or stop.
-
-This provides dynamic service discovery across the cluster.
+Everything is handled automatically by ECS.
 
 ---
 
 # Internal Service Communication
 
-The backend exports traces, metrics, and logs using OpenTelemetry.
+The backend currently communicates with internal services using Service Connect.
 
-Instead of sending telemetry directly to Prometheus or Tempo, all telemetry is first sent to the OpenTelemetry Collector.
-
-Communication flow:
+Primary communication includes:
 
 ```text
 Hourairos Backend
@@ -899,94 +1301,142 @@ Hourairos Backend
 ↓
 
 otel-collector
-
-↓
-
-Prometheus
-
-↓
-
-Grafana
 ```
 
-Tracing follows a similar path:
+Telemetry generated by the backend is forwarded to the OpenTelemetry Collector.
 
-```text
-Hourairos Backend
+The Collector then distributes telemetry to the appropriate monitoring systems.
 
-↓
+This design keeps monitoring logic separate from the application itself.
 
-otel-collector
+---
 
-↓
+# Why Cloud Map Was Selected
 
-Tempo
+Cloud Map provides several advantages:
 
-↓
+* Automatic service registration.
+* Automatic service deregistration.
+* DNS-based discovery.
+* No manual IP management.
+* Tight integration with Amazon ECS.
+* Simplified scaling.
 
-Grafana
-```
+Without Cloud Map, internal service communication would require maintaining IP addresses manually.
 
-This architecture centralizes telemetry collection and allows telemetry backends to be replaced without modifying the application.
+---
+
+# Observability
+
+Modern distributed applications require more than simple log files.
+
+Understanding application behaviour requires multiple telemetry signals working together.
+
+Hourairos implements the three pillars of observability.
+
+* Metrics
+* Logs
+* Distributed Traces
+
+Rather than sending telemetry directly to monitoring tools, every signal first passes through an OpenTelemetry Collector.
+
+This creates a centralized telemetry pipeline that can be extended without modifying application code.
 
 ---
 
 # Observability Architecture
 
-Modern distributed systems require more than application logs.
+```text
+                 Hourairos Backend
 
-Hourairos implements the three pillars of observability:
+                          │
 
-- Metrics
-- Logs
-- Traces
+                          ▼
 
-These signals provide complete visibility into application behavior.
+                 OpenTelemetry SDK
 
-The application uses OpenTelemetry instrumentation to automatically generate telemetry data.
+                          │
+
+                          ▼
+
+                OpenTelemetry Collector
+
+          ┌───────────────┼────────────────┐
+
+          ▼               ▼                ▼
+
+     Prometheus         Loki            Tempo
+
+          │               │                │
+
+          └───────────────┼────────────────┘
+
+                          ▼
+
+                       Grafana
+```
+
+The application generates telemetry only once.
+
+The Collector is responsible for distributing telemetry to the appropriate backend.
 
 ---
 
 # OpenTelemetry
 
-OpenTelemetry is responsible for collecting telemetry from the backend application.
+OpenTelemetry is responsible for instrumenting the backend application.
 
-Automatic instrumentation captures:
+Instrumentation automatically captures information including:
 
-- HTTP requests
-- Express middleware
-- Performance metrics
-- Response times
-- Errors
-- Distributed traces
+* HTTP requests
+* Express middleware
+* Request duration
+* Response latency
+* Error counts
+* Request traces
+* Custom metrics
 
 The backend exports telemetry using the OTLP protocol.
 
-Instead of communicating directly with monitoring tools, telemetry is forwarded to an OpenTelemetry Collector.
+Instead of knowing where every monitoring backend exists, the application sends everything to a single OpenTelemetry Collector.
+
+This greatly simplifies application configuration.
 
 ---
 
-# OpenTelemetry Collector
+# Why an OpenTelemetry Collector?
 
-The OpenTelemetry Collector serves as the central telemetry gateway.
+Many small projects send telemetry directly to Prometheus or Tempo.
 
-Responsibilities include:
+Hourairos intentionally introduces an OpenTelemetry Collector because this more closely resembles production architectures.
 
-- Receiving telemetry
-- Processing telemetry
-- Transforming telemetry
-- Exporting telemetry
-- Reducing application complexity
+Advantages include:
 
-Rather than configuring every monitoring system inside the application, only the Collector needs to be configured.
+* Centralized telemetry collection.
+* Easier backend replacement.
+* Data transformation.
+* Filtering.
+* Batch processing.
+* Independent monitoring infrastructure.
 
-This simplifies maintenance and improves scalability.
+Application code remains unchanged even if monitoring systems are replaced.
 
 ---
 
 # Metrics Pipeline
 
-Application metrics follow the pipeline below.
+Metrics measure how the application behaves over time.
+
+Examples include:
+
+* Request count
+* Request duration
+* Memory usage
+* CPU usage
+* Error rate
+* Active requests
+
+Metrics flow through the following pipeline.
 
 ```text
 Hourairos Backend
@@ -1008,15 +1458,25 @@ Prometheus
 Grafana Dashboard
 ```
 
-Prometheus periodically scrapes exported metrics and stores time-series data.
+Prometheus periodically scrapes exported metrics and stores them as time-series data.
 
-Grafana visualizes these metrics through customizable dashboards.
+Grafana visualizes this information through dashboards.
 
 ---
 
 # Logging Pipeline
 
-Structured application logs follow a different pipeline.
+Logs provide detailed information about application events.
+
+Examples include:
+
+* Application startup
+* Errors
+* User requests
+* Deployment operations
+* Authentication failures
+
+Log flow:
 
 ```text
 Hourairos Backend
@@ -1038,15 +1498,25 @@ Loki
 Grafana
 ```
 
-Loki stores log streams while Grafana provides searching and visualization capabilities.
+Loki stores log streams while Grafana provides searching and visualization.
 
-This separation keeps logs independent from metrics.
+Keeping logs separate from metrics improves flexibility and simplifies troubleshooting.
 
 ---
 
 # Distributed Tracing
 
-Tracing follows the same architecture.
+Metrics explain **what** happened.
+
+Logs explain **why** something happened.
+
+Distributed traces explain **how** a request travelled through the system.
+
+Every incoming request receives a unique trace identifier.
+
+That identifier follows the request throughout its lifetime.
+
+Tracing pipeline:
 
 ```text
 Hourairos Backend
@@ -1064,49 +1534,43 @@ Tempo
 Grafana
 ```
 
-Distributed tracing allows developers to understand request execution across multiple services.
-
-Each request receives a unique trace identifier, making it possible to inspect latency and execution paths.
+This makes it possible to understand request latency and identify performance bottlenecks.
 
 ---
 
-# Grafana Dashboards
+# Grafana
 
-Grafana acts as the central visualization platform.
+Grafana serves as the central visualization platform.
 
-Rather than storing telemetry itself, Grafana connects to multiple data sources.
+Instead of storing telemetry directly, Grafana connects to multiple data sources.
 
 Current data sources include:
 
-- Prometheus
-- Loki
-- Tempo
+* Prometheus
+* Loki
+* Tempo
 
-This provides a single interface for viewing:
+This allows metrics, logs, and traces to be viewed from a single interface.
 
-- Infrastructure metrics
-- Application metrics
-- Logs
-- Distributed traces
-
-Using Grafana makes it possible to correlate metrics, logs, and traces from the same request.
+Developers can correlate telemetry from the same request without switching between multiple tools.
 
 ---
-````
-````markdown
+
 # CI/CD Pipeline
 
-Hourairos follows a Git-based development workflow and uses GitHub Actions to automate the application deployment process.
+Hourairos follows a Git-based development workflow.
 
-The primary objective of the pipeline is to remove manual deployment steps while ensuring that every deployment follows the same repeatable process.
+Application deployments are fully automated using GitHub Actions.
 
-The CI/CD workflow currently focuses on application deployments. Infrastructure is managed independently through Terraform.
+Rather than manually building Docker images and deploying containers, every deployment follows the same repeatable pipeline.
+
+This reduces manual effort while ensuring consistent deployments.
 
 ---
 
-## Development Workflow
+# Development Workflow
 
-The project follows a branch-based workflow.
+Development follows a branch-based workflow.
 
 ```text
 Feature Development
@@ -1121,75 +1585,74 @@ Feature Development
 
         ▼
 
- Pull Request Review
+Pull Request Review
 
         │
 
         ▼
 
-    Merge to main
+Merge into main
 
         │
 
         ▼
 
- GitHub Actions Workflow
+GitHub Actions
 
         │
 
         ▼
 
-  Build Docker Image
+Build Docker Image
 
         │
 
         ▼
 
- Push Image to Amazon ECR
+Push Image to Amazon ECR
 
         │
 
         ▼
 
- Update Amazon ECS Service
+Update Amazon ECS Service
 
         │
 
         ▼
 
- New Application Version Running
+Rolling Deployment Complete
 ```
 
-This workflow ensures that deployments only occur after code has been merged into the main branch.
+Only code merged into the main branch is automatically deployed.
 
 ---
 
-## GitHub Actions
+# GitHub Actions
 
-GitHub Actions automates the deployment process.
-
-When changes are pushed to the main branch, the workflow performs several tasks automatically.
+GitHub Actions automates the deployment pipeline.
 
 Typical workflow:
 
 1. Checkout repository.
-2. Install project dependencies.
-3. Build the Docker image.
+2. Install dependencies.
+3. Build Docker image.
 4. Authenticate with AWS.
-5. Push the Docker image to Amazon ECR.
-6. Update the ECS service.
-7. ECS starts a new deployment.
-8. The Application Load Balancer routes traffic to healthy containers.
+5. Push image to Amazon ECR.
+6. Register updated task definition.
+7. Update ECS service.
+8. ECS performs a rolling deployment.
+9. Application Load Balancer routes traffic to healthy tasks.
 
-This removes the need to manually build images or update ECS after every change.
+This process eliminates manual deployment steps.
 
 ---
 
-## Authentication using OpenID Connect (OIDC)
+# Secure AWS Authentication using OIDC
 
-One of the security goals of this project was to avoid storing long-lived AWS access keys inside GitHub.
+One important design goal was avoiding permanent AWS credentials inside GitHub.
 
-Instead, Hourairos uses GitHub's OpenID Connect (OIDC) integration with AWS IAM.
+Instead of storing Access Keys and Secret Keys, the deployment pipeline uses GitHub OpenID Connect.
 
 Authentication flow:
 
@@ -1206,7 +1669,7 @@ AWS IAM Identity Provider
 
 ↓
 
-Assume IAM Role
+Assume Deployment Role
 
 ↓
 
@@ -1214,107 +1677,105 @@ Temporary AWS Credentials
 
 ↓
 
-Deploy Resources
+Deploy Infrastructure
 ```
 
-This approach provides several benefits:
+Temporary credentials exist only during workflow execution.
 
-- No AWS access keys stored in GitHub.
-- Temporary credentials are generated only during workflow execution.
-- Reduced risk of credential leakage.
-- Recommended authentication method by AWS.
+No permanent AWS credentials are stored inside the repository or GitHub Secrets.
 
-The GitHub workflow only receives temporary permissions required for deployment.
+This follows AWS security best practices.
 
 ---
 
-# Infrastructure as Code
-
-Infrastructure is managed using Terraform.
-
-Terraform provides a declarative approach for defining cloud infrastructure.
-
-Instead of manually configuring AWS resources through the AWS Console, infrastructure can be described as code, version controlled, reviewed, and reproduced consistently.
+# Why OIDC?
 
 Benefits include:
 
-- Version-controlled infrastructure.
-- Repeatable deployments.
-- Easier collaboration.
-- Reduced configuration drift.
-- Automated infrastructure provisioning.
-- Easier disaster recovery.
+* No long-lived AWS credentials.
+* Automatic credential expiration.
+* Reduced credential leakage risk.
+* Least privilege access.
+* Recommended AWS authentication model.
+
+Using OIDC significantly improves deployment security compared to traditional access keys.
 
 ---
 
-# Manual Infrastructure to Terraform Migration
+# Deployment Strategy
 
-A major objective of this project was to understand how existing cloud environments can be migrated to Infrastructure as Code.
+Application deployments follow a rolling deployment strategy.
 
-Unlike many tutorials that provision everything directly through Terraform, Hourairos was initially built manually using the AWS Management Console and AWS CLI.
+When a new image is available:
 
-After validating the architecture, the existing infrastructure was gradually imported into Terraform.
+1. ECS starts new tasks.
+2. Health checks are performed.
+3. Healthy tasks receive traffic.
+4. Old tasks are terminated.
 
-Migration process:
+Users continue accessing the application while deployments occur.
 
-```text
-AWS Console
-
-↓
-
-Existing AWS Resources
-
-↓
-
-Terraform Resource Blocks
-
-↓
-
-Terraform Import Blocks
-
-↓
-
-Terraform State
-
-↓
-
-Terraform Managed Infrastructure
-```
-
-This mirrors a common production scenario where organizations adopt Terraform after infrastructure has already been deployed.
-
-The project demonstrates how manually created AWS resources can become fully managed by Terraform without requiring them to be recreated.
+This minimizes downtime during releases.
 
 ---
 
-# Terraform Import Blocks
+# Continuous Integration vs Continuous Deployment
 
-Terraform Import Blocks simplify the migration of existing resources.
+Within this project:
 
-Instead of using the legacy CLI import command repeatedly, import blocks are defined directly in the Terraform configuration.
+Continuous Integration is responsible for:
 
-Example:
+* Source control
+* Code validation
+* Docker image creation
 
-```hcl
-resource "aws_ecs_cluster" "hourairos_cluster" {
-  name = "hourairos-cluster"
-}
+Continuous Deployment is responsible for:
 
-import {
-  to = aws_ecs_cluster.hourairos_cluster
-  id = "hourairos-cluster"
-}
-```
+* Publishing images
+* Updating ECS
+* Rolling deployments
 
-After importing, Terraform records the resource inside its state file and begins managing it like any other Terraform resource.
+Separating these responsibilities keeps the deployment pipeline easier to maintain and expand.
 
-This makes the migration process reproducible and keeps import history alongside the infrastructure code.
+---
+# Infrastructure as Code
+
+A major objective of Hourairos was to manage the entire cloud infrastructure using Infrastructure as Code (IaC).
+
+Instead of relying solely on the AWS Management Console, infrastructure is described using Terraform configuration files. This approach makes the infrastructure version-controlled, reproducible, easier to review, and significantly simpler to maintain over time.
+
+Every infrastructure change can be tracked alongside application changes, making deployments more predictable and reducing the chances of configuration drift.
+
+The project uses Terraform to manage infrastructure across multiple AWS services, including networking, compute, storage, identity, monitoring, and security.
+
+---
+
+# Why Terraform?
+
+Terraform was selected because it provides a declarative approach to infrastructure management.
+
+Instead of manually configuring resources through the AWS Console, the desired infrastructure state is defined as code.
+
+Advantages include:
+
+* Version controlled infrastructure
+* Reproducible deployments
+* Easier collaboration
+* Infrastructure documentation
+* Reduced manual configuration
+* Consistent environments
+* Simplified disaster recovery
+* Infrastructure review through Pull Requests
+
+Using Terraform allows infrastructure to evolve alongside the application rather than existing as undocumented manual configurations.
 
 ---
 
 # Terraform Project Structure
 
-The Terraform configuration is organized by service rather than placing every resource inside a single file.
+The Terraform project is organized by AWS service instead of placing every resource into a single configuration file.
+
+This keeps related resources together, improves readability, and makes the project easier to navigate.
 
 ```text
 terraform/
@@ -1364,209 +1825,434 @@ terraform/
 └── security/
 ```
 
-Organizing resources into dedicated directories improves readability, simplifies maintenance, and makes it easier to locate infrastructure related to a specific AWS service.
+Every directory represents a logical infrastructure component, making the project easier to understand and extend.
+
+---
+
+# Manual Infrastructure to Infrastructure as Code
+
+Unlike many Infrastructure as Code tutorials, Hourairos was **not** originally created using Terraform.
+
+The project began with manually provisioned AWS resources using the AWS Management Console and AWS CLI.
+
+Building the infrastructure manually first provided a deeper understanding of how each AWS service behaves, how services interact, and how production environments are assembled before introducing automation.
+
+Once the architecture became stable, the infrastructure was migrated into Terraform.
+
+This migration process reflects a real-world scenario where organizations adopt Infrastructure as Code after infrastructure has already been deployed.
+
+---
+
+# Terraform Import Migration
+
+Instead of recreating the existing infrastructure, Terraform Import Blocks were used to bring existing AWS resources under Terraform management.
+
+Migration process:
+
+```text
+AWS Console
+
+        │
+
+        ▼
+
+Existing AWS Resources
+
+        │
+
+        ▼
+
+Terraform Resource Blocks
+
+        │
+
+        ▼
+
+Terraform Import Blocks
+
+        │
+
+        ▼
+
+Terraform State
+
+        │
+
+        ▼
+
+Terraform Managed Infrastructure
+```
+
+After importing, Terraform becomes responsible for tracking the infrastructure state.
+
+Future modifications can then be performed through Terraform rather than manually through the AWS Console.
+
+---
+
+# Why Import Existing Resources?
+
+In production environments, infrastructure often already exists before Terraform is introduced.
+
+Deleting and recreating production infrastructure is rarely acceptable.
+
+Importing existing resources provides several advantages:
+
+* No infrastructure recreation
+* No service downtime
+* Existing resources remain unchanged
+* Infrastructure becomes version controlled
+* Future changes are managed consistently
+
+This project demonstrates that Infrastructure as Code can be adopted incrementally without rebuilding the entire environment.
+
+---
+
+# Terraform Import Blocks
+
+Terraform Import Blocks simplify the migration process by defining imports directly inside the Terraform configuration.
+
+Example:
+
+```hcl
+resource "aws_ecs_cluster" "hourairos_cluster" {
+  name = "hourairos-cluster"
+}
+
+import {
+  to = aws_ecs_cluster.hourairos_cluster
+  id = "hourairos-cluster"
+}
+```
+
+Unlike the legacy `terraform import` command, Import Blocks become part of the configuration itself.
+
+This makes migrations reproducible and documents exactly how existing infrastructure entered Terraform management.
 
 ---
 
 # Terraform Remote State
 
-The project uses a remote backend to store Terraform state.
+Terraform state is stored remotely inside Amazon S3.
 
-State is stored inside an Amazon S3 bucket instead of the local machine.
+Instead of keeping the state file on a local machine, every Terraform operation reads and updates a centralized state file.
 
 Architecture:
 
 ```text
-Terraform
+Terraform CLI
 
-↓
+        │
+
+        ▼
 
 Amazon S3
 
-↓
+        │
+
+        ▼
 
 terraform.tfstate
 ```
 
-Using remote state provides several advantages:
+Using a remote backend improves collaboration while protecting the infrastructure state from accidental loss.
 
-- Centralized state storage.
-- Team collaboration.
-- State versioning.
-- Backup and recovery.
-- Reduced risk of accidental state loss.
+---
+
+# Why Remote State?
+
+Remote state provides several advantages:
+
+* Shared infrastructure state
+* Version history
+* Team collaboration
+* Backup and recovery
+* Centralized management
+* Reduced risk of state loss
+
+Because every Terraform operation uses the same state file, all contributors work from a single source of truth.
 
 ---
 
 # State Locking
 
-To prevent multiple Terraform operations from modifying the same infrastructure simultaneously, state locking is used.
+Terraform state must never be modified simultaneously by multiple users.
 
-The project uses Amazon DynamoDB for Terraform state locking.
+To prevent concurrent modifications, Hourairos uses DynamoDB for state locking.
 
 Workflow:
 
 ```text
 terraform apply
 
-↓
+        │
 
-Create Lock
+        ▼
 
-↓
+Acquire Lock
+
+        │
+
+        ▼
 
 Modify Infrastructure
 
-↓
+        │
 
-Update State
+        ▼
 
-↓
+Update State File
+
+        │
+
+        ▼
 
 Release Lock
 ```
 
-If another Terraform operation starts while the lock exists, Terraform waits until the current operation finishes.
+If another Terraform operation begins while a lock already exists, Terraform waits until the existing operation completes.
 
-This prevents concurrent state modifications and reduces the risk of state corruption.
-
----
-
-# Security
-
-Security has been considered throughout the project architecture.
-
-Rather than relying on hardcoded credentials or publicly accessible infrastructure, Hourairos makes use of several AWS security services and best practices.
-
-Key security features include:
-
-- Amazon Cognito authentication.
-- Email verification.
-- Secure session management.
-- Cookie-based authentication.
-- IAM Roles.
-- IAM Policies.
-- AWS Secrets Manager.
-- HTTPS endpoints.
-- Private networking.
-- Security Groups.
-- Temporary AWS credentials through OIDC.
+This prevents race conditions and protects the integrity of the infrastructure state.
 
 ---
 
-## Secrets Management
+# Security Architecture
 
-Application secrets are stored in AWS Secrets Manager.
+Security has been incorporated throughout the project rather than being treated as an afterthought.
+
+The platform combines multiple AWS security services and best practices to protect application data, deployment infrastructure, and user authentication.
+
+Key security components include:
+
+* Amazon Cognito
+* AWS IAM
+* AWS Secrets Manager
+* Security Groups
+* HTTPS
+* Private Networking
+* Session Authentication
+* Temporary AWS Credentials through OIDC
+
+---
+
+# Identity and Access Management
+
+AWS Identity and Access Management (IAM) controls access across the platform.
+
+Separate IAM roles are used for different responsibilities.
 
 Examples include:
 
-- Cognito configuration.
-- Session secrets.
-- API credentials.
-- Application configuration.
+* ECS Task Execution Role
+* ECS Task Role
+* GitHub Actions Deployment Role
+* Terraform Management Role
 
-At application startup, the backend retrieves the required configuration securely.
-
-This prevents sensitive information from being committed to Git or embedded inside Docker images.
+Each role receives only the permissions required for its responsibilities, following the Principle of Least Privilege.
 
 ---
 
-## IAM
+# Secrets Management
 
-AWS Identity and Access Management (IAM) is used to enforce the principle of least privilege.
+Sensitive configuration values are stored securely inside AWS Secrets Manager.
 
-Separate IAM roles are used for:
+Examples include:
 
-- ECS Task Execution
-- ECS Task Role
-- GitHub Actions Deployment
-- Terraform Infrastructure Management
+* Cognito configuration
+* Session secrets
+* Application secrets
+* API credentials
 
-Each role receives only the permissions required for its responsibilities.
+Rather than embedding these values inside source code or Docker images, the application retrieves them securely during startup.
+
+This approach keeps sensitive information out of the repository while simplifying secret rotation.
 
 ---
 
-## Networking Security
+# Networking Security
 
-The infrastructure is protected using multiple networking controls.
+The network architecture separates publicly accessible components from internal application workloads.
 
-These include:
+Only the Application Load Balancer receives internet traffic.
 
-- Security Groups
-- Private Subnets
-- Application Load Balancer
-- VPC Isolation
+Application containers remain inside the VPC and are protected through Security Groups.
 
-Backend containers are not exposed directly to the internet.
+This design minimizes the attack surface while allowing controlled communication between services.
 
-External traffic reaches the application only through the Application Load Balancer.
+---
+
+# Repository Organization
+
+The repository is divided into logical sections based on responsibility.
+
+```text
+Hourairos/
+
+├── backend/
+│
+├── infrastructure/
+│   └── terraform/
+│
+├── observability/
+│
+├── services/
+│
+├── middleware/
+│
+├── utils/
+│
+├── public/
+│
+├── views/
+│
+├── .github/
+│   └── workflows/
+│
+├── Dockerfile
+├── docker-compose.yml
+├── bootstrap.js
+├── telemetry.js
+├── metrics.js
+└── README.md
+```
+
+Separating application logic, infrastructure, and observability simplifies maintenance and allows each component to evolve independently.
+
+---
+
+# Design Decisions
+
+Several architectural decisions were made intentionally throughout the project.
+
+## Why ECS Instead of EC2?
+
+Using ECS removes much of the operational overhead associated with managing virtual machines.
+
+Container orchestration, health monitoring, service recovery, and deployments are handled by ECS rather than manually.
+
+---
+
+## Why AWS Fargate?
+
+Fargate eliminates server management entirely.
+
+Instead of provisioning and maintaining EC2 instances, AWS manages the underlying compute infrastructure while the project focuses on containerized workloads.
+
+---
+
+## Why Service Connect?
+
+Containers receive dynamic IP addresses.
+
+Service Connect provides stable DNS-based communication between services without requiring manual service discovery.
+
+---
+
+## Why OpenTelemetry?
+
+Instead of tightly coupling the application with individual monitoring systems, OpenTelemetry provides a vendor-neutral telemetry layer.
+
+This makes the monitoring architecture easier to extend and maintain.
+
+---
+
+## Why Terraform?
+
+Terraform provides consistent infrastructure management, version control, reproducibility, and automated deployments while documenting the complete cloud architecture.
+
+---
+
+## Why GitHub Actions?
+
+GitHub Actions integrates directly with the source repository, allowing application deployments to be triggered automatically whenever changes are merged into the main branch.
+
+---
+
+# Challenges Faced During Development
+
+Building Hourairos involved solving several practical cloud engineering challenges.
+
+Some of the most significant challenges included:
+
+* Understanding ECS networking.
+* Learning how Service Connect discovers services.
+* Configuring OpenTelemetry instrumentation.
+* Building an end-to-end observability pipeline.
+* Managing authentication using Amazon Cognito.
+* Securely handling secrets.
+* Migrating existing infrastructure into Terraform.
+* Configuring GitHub Actions with AWS OIDC.
+* Understanding Terraform remote state management.
+* Organizing infrastructure into maintainable Terraform modules.
+
+Each challenge contributed to a deeper understanding of how production cloud environments operate beyond simple application deployment.
+
+---
+
+# Lessons Learned
+
+Hourairos provided practical experience with many areas of cloud engineering.
+
+Some of the most valuable lessons include:
+
+* Designing cloud-native architectures.
+* Building stateless applications.
+* Containerizing applications with Docker.
+* Running production workloads on Amazon ECS.
+* Understanding service discovery.
+* Managing infrastructure using Terraform.
+* Migrating manually created infrastructure into Infrastructure as Code.
+* Building secure deployment pipelines.
+* Implementing distributed observability.
+* Designing maintainable cloud infrastructure.
+
+More importantly, the project demonstrated that cloud engineering extends far beyond provisioning AWS services.
+
+Building reliable systems requires understanding networking, automation, security, monitoring, deployment strategies, and operational best practices together rather than in isolation.
 
 ---
 
 # Future Improvements
 
-Although the current implementation demonstrates a complete cloud-native architecture, several enhancements can be added in the future.
+Although Hourairos demonstrates a complete cloud-native deployment platform, several enhancements are planned for future iterations.
 
-Possible improvements include:
+Potential improvements include:
 
-- Multi-region deployments.
-- Blue/Green deployments.
-- Canary deployments.
-- Auto Scaling Policies.
-- AWS WAF integration.
-- Custom deployment domains.
-- Deployment rollback support.
-- User analytics dashboard.
-- Deployment history and versioning.
-- Automated SSL certificate provisioning.
-- Infrastructure testing.
-- Cost monitoring dashboards.
-- Backup automation.
-- Multi-environment infrastructure (Development, Staging, Production).
+* Multi-environment infrastructure
+* Blue/Green deployments
+* Canary deployments
+* ECS Auto Scaling
+* AWS WAF integration
+* Deployment version history
+* Rollback support
+* Custom deployment domains
+* Deployment analytics
+* Cost monitoring dashboards
+* Automated infrastructure testing
+* Multi-region deployments
+* Disaster recovery strategy
+* Backup automation
 
----
-
-# Learning Outcomes
-
-Building Hourairos provided practical experience with several cloud engineering concepts beyond simply using AWS services.
-
-Key learning areas include:
-
-- Cloud-native application architecture.
-- Containerization using Docker.
-- Container orchestration using Amazon ECS.
-- Serverless container deployments using AWS Fargate.
-- Secure authentication with Amazon Cognito.
-- Distributed observability using OpenTelemetry.
-- Metrics, logs, and distributed tracing.
-- Service discovery using AWS Cloud Map.
-- ECS Service Connect networking.
-- Infrastructure as Code using Terraform.
-- Migration of existing infrastructure into Terraform.
-- Remote Terraform state management.
-- GitHub Actions CI/CD pipelines.
-- Secure AWS authentication using OpenID Connect.
-- AWS networking fundamentals.
-- Secrets management.
-- Infrastructure organization and modularization.
+These improvements would move the project even closer to a production-grade hosting platform.
 
 ---
 
 # Conclusion
 
-Hourairos was built as a practical cloud engineering project to explore how modern applications are deployed, managed, and monitored on AWS.
+Hourairos was built as a cloud engineering project to understand how modern applications are deployed, operated, monitored, and maintained on AWS.
 
-Rather than focusing solely on application development, the project emphasizes the infrastructure, automation, networking, observability, and operational practices that support production workloads.
+Rather than focusing solely on application development, the project explores the infrastructure and operational practices that support production workloads.
 
-The architecture combines multiple AWS managed services with modern engineering practices to create a scalable, maintainable, and secure deployment platform for static websites.
+The platform combines container orchestration, secure authentication, Infrastructure as Code, automated deployments, distributed observability, service discovery, and cloud-native design principles into a single cohesive architecture.
 
-The project demonstrates the complete lifecycle of a cloud-native application—from user authentication and deployment, through container orchestration, monitoring, continuous deployment, and Infrastructure as Code—while also documenting the migration of manually created AWS resources into Terraform-managed infrastructure.
+From the initial user authentication flow to global content delivery through CloudFront, every component was designed to provide hands-on experience with real AWS services and modern engineering practices.
 
-Although originally developed as a personal learning project, the overall architecture reflects many of the technologies, workflows, and operational concepts commonly used in real-world cloud environments.
+While the application itself provides static website hosting, the primary purpose of the project is to demonstrate practical knowledge of cloud architecture, infrastructure automation, deployment workflows, networking, security, and observability.
+
+The knowledge gained throughout the development of Hourairos extends well beyond this project and forms a strong foundation for designing, deploying, and operating production cloud environments.
 
 ---
 
-## Author
+# Author
 
 **Mohammed Mushtaq**
 
@@ -1576,9 +2262,8 @@ GitHub: https://github.com/Mohammedmushtaq0
 
 ---
 
-## License
+# License
 
-This project is intended for educational and portfolio purposes.
+This project is published for educational and portfolio purposes.
 
-Feel free to explore the codebase, learn from the implementation, and adapt the architecture for your own projects where appropriate.
-````
+Feel free to explore the repository, study the architecture, and adapt the implementation for your own learning.
